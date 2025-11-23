@@ -2,8 +2,8 @@ package ru.sidorov.reminder.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.sidorov.reminder.dto.ReminderRequest;
-import ru.sidorov.reminder.dto.ReminderResponse;
+import ru.sidorov.reminder.dto.reminder.ReminderRequest;
+import ru.sidorov.reminder.dto.reminder.ReminderResponse;
 import ru.sidorov.reminder.entity.Reminder;
 
 import java.util.List;

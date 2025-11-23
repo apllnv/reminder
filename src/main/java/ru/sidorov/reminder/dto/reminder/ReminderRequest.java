@@ -1,15 +1,13 @@
-package ru.sidorov.reminder.dto;
+package ru.sidorov.reminder.dto.reminder;
 
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Data
-public class ReminderResponse {
-    private Long id;
+public class ReminderRequest {
     private String title;
     private String description;
     private LocalDateTime remind;
     private Long userId;
-    private LocalDateTime createdAt;
-    private Boolean isNotified;
 }

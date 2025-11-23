@@ -2,22 +2,24 @@ package ru.sidorov.reminder.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.sidorov.reminder.dto.ReminderRequest;
-import ru.sidorov.reminder.dto.ReminderResponse;
+import ru.sidorov.reminder.dto.reminder.PageReminderRequest;
+import ru.sidorov.reminder.dto.reminder.ReminderRequest;
+import ru.sidorov.reminder.dto.reminder.ReminderResponse;
 import ru.sidorov.reminder.service.ReminderService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("domain/api/v1/")
-public class RemindController {
+public class ReminderController {
 
     private final ReminderService reminderService;
 
+    // Контроллер
     @GetMapping("list")
-    public List<ReminderResponse> list() {
-        return reminderService.getAll();
+    public PageReminderRequest list(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return reminderService.getList(pageNo, pageSize);
     }
 
     @GetMapping("reminder/{remindId}")
@@ -31,7 +33,7 @@ public class RemindController {
     }
 
     //нужно возвращать ответ, а не сущность
-    @PutMapping ("reminder/update/{remindId}")
+    @PutMapping("reminder/update/{remindId}")
     public ReminderResponse update(
             @RequestBody ReminderRequest reminderRequest,
             @PathVariable("remindId") Long remindId) {
