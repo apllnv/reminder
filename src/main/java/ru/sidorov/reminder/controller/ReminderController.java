@@ -2,7 +2,7 @@ package ru.sidorov.reminder.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.sidorov.reminder.dto.reminder.PageReminderRequest;
+import ru.sidorov.reminder.dto.reminder.PageReminderResponse;
 import ru.sidorov.reminder.dto.reminder.ReminderRequest;
 import ru.sidorov.reminder.dto.reminder.ReminderResponse;
 import ru.sidorov.reminder.service.ReminderService;
@@ -16,10 +16,20 @@ public class ReminderController {
 
     // Контроллер
     @GetMapping("list")
-    public PageReminderRequest list(
+    public PageReminderResponse list(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return reminderService.getList(pageNo, pageSize);
+    }
+
+    @GetMapping("sort")
+    public PageReminderResponse sort(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "title", required = false) String sortBy,
+            @RequestParam(value = "sortDirection", defaultValue = "asc", required = false) String sortDirection
+    ) {
+        return reminderService.getSortedList(pageNo, pageSize, sortBy, sortDirection);
     }
 
     @GetMapping("reminder/{remindId}")

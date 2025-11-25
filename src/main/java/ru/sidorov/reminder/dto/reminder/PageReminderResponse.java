@@ -5,9 +5,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PageReminderRequest {
+public class PageReminderResponse {
     private List<ReminderResponse> content;
-
     private int pageNo;
     private int pageSize;
     private long totalElements;
