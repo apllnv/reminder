@@ -1,6 +1,7 @@
 package ru.sidorov.reminder.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,9 @@ import ru.sidorov.reminder.exception.ErrorDiscriptor;
 import ru.sidorov.reminder.mapper.ReminderMapper;
 import ru.sidorov.reminder.repository.ReminderRepository;
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -73,4 +77,26 @@ public class ReminderService {
     }
 
 
+    public PageReminderResponse getSortedAndFilteredList(int pageNo, int pageSize, String sortBy, String sortDirection,
+                                                         LocalDateTime remindDateFrom,
+                                                         LocalDateTime remindDateTo, Boolean todayOnly) {
+        LocalDateTime startOfDay = null;
+        LocalDateTime endOfDay = null;
+        if (todayOnly != null && todayOnly) {
+            startOfDay = LocalDateTime.now().with(LocalTime.MIN);
+            endOfDay = LocalDateTime.now().with(LocalTime.MAX);
+        } else {
+            startOfDay = (remindDateFrom != null) ? remindDateFrom : LocalDateTime.of(1970, 1, 1, 0, 0);
+            endOfDay = (remindDateTo != null) ? remindDateTo : LocalDateTime.of(2099, 12, 31, 23, 59);
+        }
+
+        Sort sort = "desc".equalsIgnoreCase(sortDirection)
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Page<Reminder> page = reminderRepository.findByDateBetween(startOfDay, endOfDay, pageable);
+
+        return reminderMapper.toPageResponse(page);
+
+    }
 }

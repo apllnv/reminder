@@ -10,6 +10,4 @@ public class ReminderResponse {
     private String description;
     private LocalDateTime remind;
     private Long userId;
-    private LocalDateTime createdAt;
-    private Boolean isNotified;
 }
